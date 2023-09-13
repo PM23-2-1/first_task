@@ -1,0 +1,16 @@
+print('a + b =', int(input()) + int(input()))
+
+number_a = int(input())
+number_b = int(input())
+if number_b != 0:
+    print('a + b =', number_a + number_b)
+    print('a - b =', number_a - number_b)
+    print('a * b =', number_a * number_b)
+    print('a / b =', number_a / number_b)
+    print('a // b =', number_a // number_b)
+    print('a % b =', number_a % number_b)
+    print('a * -1 , b * -1 =', number_a * -1, number_b * -1)
+    print('abs(a), abs(b) =', abs(number_a), abs(number_b))
+    print('a // b, a % b =', divmod(number_a, number_b))
+    print('a ** b =', number_a ** number_b)
+    print('pow(a, b) =', pow(number_a, number_b))
