@@ -7,6 +7,7 @@ import env
 import universal
 
 warnings.filterwarnings("ignore")
+name = input('Имя бд: ')
 
 def check_db() -> None:
     conn = pymysql.connect(host='localhost',
@@ -18,12 +19,12 @@ def check_db() -> None:
     print("База данных подключена")
 
     try:
-        cursor.execute("SELECT * FROM operations")
+        cursor.execute("SELECT * FROM %s" % name)
     except BaseException as e:
         print(e)
         with open('create_structure.sql', 'r') as sql_file:
             sql_script = sql_file.read()
-            cursor.execute(sql_script)
+            cursor.execute(sql_script % name)
             conn.commit()
             print("Скрипт SQL успешно выполнен")
 
