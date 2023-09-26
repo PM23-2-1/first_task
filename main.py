@@ -7,6 +7,7 @@ import env
 import universal
 
 warnings.filterwarnings("ignore")
+os.system('cls||clear')
 name = input('Имя бд: ')
 name_table = input('Имя таблицы: ')
 
@@ -28,7 +29,7 @@ def check_db() -> None:
 
     try:
         cursor.execute("SELECT * FROM %s" % name_table)
-    except BaseException:
+    except pymysql.err.MySQLError:
         with open('create_structure.sql', 'r') as sql_file:
             sql_script = sql_file.read()
             cursor.execute(sql_script % name_table)
