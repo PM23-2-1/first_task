@@ -8,23 +8,24 @@ import universal
 
 warnings.filterwarnings("ignore")
 name = input('Имя бд: ')
+name_table = input('Имя таблицы: ')
 
 def check_db() -> None:
     conn = pymysql.connect(host='localhost',
                              user=env.USER,
                              password=env.PASSWORD,
-                             database='finuniver_zad',
+                             database=name,
                              cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
     print("База данных подключена")
 
     try:
-        cursor.execute("SELECT * FROM %s" % name)
+        cursor.execute("SELECT * FROM %s" % name_table)
     except BaseException as e:
         print(e)
         with open('create_structure.sql', 'r') as sql_file:
             sql_script = sql_file.read()
-            cursor.execute(sql_script % name)
+            cursor.execute(sql_script % name_table)
             conn.commit()
             print("Скрипт SQL успешно выполнен")
     return
@@ -33,10 +34,10 @@ def save_result(operation, result):
     conn = pymysql.connect(host='localhost',
                              user=env.USER,
                              password=env.PASSWORD,
-                             database='finuniver_zad',
+                             database=name,
                              cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
-    cursor.execute(f"INSERT INTO operations(operat, result) VALUES (%s, %s)", (operation, str(result)))
+    cursor.execute(f"INSERT INTO %s (operat, result) VALUES (%s, %s)", (name_table, operation, str(result)))
     conn.commit()
     return
 
