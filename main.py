@@ -27,6 +27,7 @@ def check_db() -> None:
             cursor.execute(sql_script % name)
             conn.commit()
             print("Скрипт SQL успешно выполнен")
+    return
 
 def save_result(operation, result):
     conn = pymysql.connect(host='localhost',
@@ -37,6 +38,7 @@ def save_result(operation, result):
     cursor = conn.cursor()
     cursor.execute(f"INSERT INTO operations(operat, result) VALUES (%s, %s)", (operation, str(result)))
     conn.commit()
+    return
 
 def save_db_to_xlxs():
     conn = pymysql.connect(host='localhost',
@@ -46,6 +48,7 @@ def save_db_to_xlxs():
                             cursorclass=pymysql.cursors.DictCursor)
     new_df = pd.read_sql("SELECT * FROM operations", conn)
     new_df.to_excel("out.xlsx")
+    return
 
 def print_db():
     conn = pymysql.connect(host='localhost',
@@ -55,11 +58,13 @@ def print_db():
                             cursorclass=pymysql.cursors.DictCursor)
     new_df = pd.read_sql("SELECT * FROM operations", conn)
     print(new_df)
+    return
 
 def print_exel():
     name = input('Путь до файла и название: ')
     new_df = pd.read_excel(name)
     print(new_df)
+    return
 
 
 def op_plus():
@@ -67,18 +72,21 @@ def op_plus():
     number_b = int(input('b: '))
     print('a + b =', number_a + number_b)
     save_result('a + b', number_a + number_b)
+    return
 
 def op_minus():
     number_a = int(input('a: '))
     number_b = int(input('b: '))
     print('a - b =', number_a - number_b)
     save_result('a - b', number_a - number_b)
+    return
 
 def op_ymn():
     number_a = int(input('a: '))
     number_b = int(input('b: '))
     print('a * b =', number_a * number_b)
     save_result('a * b', number_a * number_b)
+    return
 
 def op_del():
     number_a = int(input('a: '))
@@ -86,6 +94,7 @@ def op_del():
     if number_b != 0:
         print('a / b =', number_a / number_b)
         save_result('a / b', number_a / number_b)
+    return
 
 def op_chel_del():
     number_a = int(input('a: '))
@@ -93,6 +102,7 @@ def op_chel_del():
     if number_b != 0:
         print('a // b =', number_a // number_b)
         save_result('a // b', number_a // number_b)
+    return
 
 def op_ost():
     number_a = int(input('a: '))
@@ -100,16 +110,19 @@ def op_ost():
     if number_b != 0:
         print('a % b =', number_a % number_b)
         save_result('a % b', number_a % number_b)
+    return
 
 def op_switch():
     number_a = int(input('a: '))
     print('a * -1 = ', number_a * -1)
     save_result('a * -1', number_a * -1)
+    return
 
 def op_abs():
     number_a = int(input('a: '))
     print('abs(a) =', abs(number_a))
     save_result('abs(a)', abs(number_a))
+    return
 
 def op_divmod():
     number_a = int(input('a: '))
@@ -117,12 +130,14 @@ def op_divmod():
     if number_b != 0:
         print('a // b, a % b =', divmod(number_a, number_b))
         save_result('a // b, a % b', divmod(number_a, number_b))
+    return
 
 def op_step():
     number_a = int(input('a: '))
     number_b = int(input('b: '))
     print('a ** b =', number_a ** number_b)
     save_result('a ** b', number_a ** number_b)
+    return
 
 def op_pow():
     number_a = int(input('a: '))
@@ -130,6 +145,7 @@ def op_pow():
     number_c = int(input('c: '))
     print('pow(a, b, c) =', pow(number_a, number_b, number_c))
     save_result('pow(a, b, c)', pow(number_a, number_b, number_c))
+    return
 
 def main():
     run = True
@@ -153,6 +169,7 @@ def main():
                       op_ymn, op_del, op_chel_del, 
                       op_ost, op_step, op_pow,
                       print_db, save_db_to_xlxs, print_exel)
+    return
 
 if __name__ == '__main__':
     main()
