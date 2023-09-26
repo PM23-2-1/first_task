@@ -14,6 +14,13 @@ def check_db() -> None:
     conn = pymysql.connect(host='localhost',
                              user=env.USER,
                              password=env.PASSWORD,
+                             cursorclass=pymysql.cursors.DictCursor)
+    cursor = conn.cursor()
+    cursor.execute("CREATE DATABASE IF NOT EXISTS `%s`" % name)
+
+    conn = pymysql.connect(host='localhost',
+                             user=env.USER,
+                             password=env.PASSWORD,
                              database=name,
                              cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
@@ -21,8 +28,7 @@ def check_db() -> None:
 
     try:
         cursor.execute("SELECT * FROM %s" % name_table)
-    except BaseException as e:
-        print(e)
+    except BaseException:
         with open('create_structure.sql', 'r') as sql_file:
             sql_script = sql_file.read()
             cursor.execute(sql_script % name_table)
@@ -37,7 +43,7 @@ def save_result(operation, result):
                              database=name,
                              cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
-    cursor.execute(f"INSERT INTO %s (operat, result) VALUES (%s, %s)", (name_table, operation, str(result)))
+    cursor.execute("INSERT INTO " + name_table + f" (operat, result) VALUES (%s, %s)", (operation, str(result)))
     conn.commit()
     return
 
@@ -47,7 +53,7 @@ def save_db_to_xlxs():
                             password=env.PASSWORD,
                             database=name,
                             cursorclass=pymysql.cursors.DictCursor)
-    new_df = pd.read_sql("SELECT * FROM operations", conn)
+    new_df = pd.read_sql("SELECT * FROM " + name_table, conn)
     new_df.to_excel("out.xlsx")
     return
 
@@ -57,7 +63,7 @@ def print_db():
                             password=env.PASSWORD,
                             database=name,
                             cursorclass=pymysql.cursors.DictCursor)
-    new_df = pd.read_sql("SELECT * FROM operations", conn)
+    new_df = pd.read_sql("SELECT * FROM " + name_table, conn)
     print(new_df)
     return
 

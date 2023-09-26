@@ -1,4 +1,4 @@
-CREATE TABLE `%s` (
+CREATE TABLE IF NOT EXISTS `%s` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `operat` varchar(100) NOT NULL,
   `result` varchar(100) NOT NULL,
