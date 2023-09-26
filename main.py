@@ -45,7 +45,7 @@ def save_db_to_xlxs():
     conn = pymysql.connect(host='localhost',
                             user=env.USER,
                             password=env.PASSWORD,
-                            database='finuniver_zad',
+                            database=name,
                             cursorclass=pymysql.cursors.DictCursor)
     new_df = pd.read_sql("SELECT * FROM operations", conn)
     new_df.to_excel("out.xlsx")
@@ -55,7 +55,7 @@ def print_db():
     conn = pymysql.connect(host='localhost',
                             user=env.USER,
                             password=env.PASSWORD,
-                            database='finuniver_zad',
+                            database=name,
                             cursorclass=pymysql.cursors.DictCursor)
     new_df = pd.read_sql("SELECT * FROM operations", conn)
     print(new_df)
